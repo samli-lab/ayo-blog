@@ -6,7 +6,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import CircularProgress from '@mui/material/CircularProgress';
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -32,7 +35,9 @@ export default function GalleryPage() {
   const [pagination, setPagination] = React.useState<Pagination | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [loadingMore, setLoadingMore] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   const [selectedImg, setSelectedImg] = React.useState<string | null>(null);
+  const [imageErrors, setImageErrors] = React.useState<Set<string>>(new Set());
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -45,6 +50,7 @@ export default function GalleryPage() {
         setLoadingMore(true);
       } else {
         setLoading(true);
+        setError(null);
       }
 
       const resData = await getGalleryPhotos(page, 12);
@@ -62,14 +68,25 @@ export default function GalleryPage() {
           setPhotos(resData.data.photos);
         }
         setPagination(resData.data.pagination);
+        setError(null);
+      } else {
+        throw new Error(resData.message || '获取照片失败');
       }
     } catch (error) {
       console.error('Failed to fetch photos:', error);
+      const errorMessage = error instanceof Error ? error.message : '加载照片失败，请检查网络连接后重试';
+      if (!isLoadMore) {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
       setLoadingMore(false);
     }
   }, []);
+
+  const handleImageError = (photoId: string) => {
+    setImageErrors(prev => new Set(prev).add(photoId));
+  };
 
   React.useEffect(() => {
     fetchPhotos(1);
@@ -109,6 +126,66 @@ export default function GalleryPage() {
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
           <CircularProgress color="primary" />
+        </Box>
+      ) : error ? (
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          py: { xs: 8, md: 10 },
+          px: 2
+        }}>
+          <ErrorOutlineIcon 
+            sx={{ 
+              fontSize: { xs: 48, md: 64 }, 
+              color: 'error.main', 
+              mb: 2,
+              opacity: 0.8
+            }} 
+          />
+          <Typography 
+            variant="h6" 
+            color="error" 
+            sx={{ 
+              mb: 2,
+              fontSize: { xs: '1.1rem', md: '1.25rem' },
+              fontWeight: 500
+            }}
+          >
+            加载失败
+          </Typography>
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            sx={{ 
+              mb: 3, 
+              textAlign: 'center',
+              maxWidth: '400px',
+              fontSize: { xs: '0.875rem', md: '1rem' },
+              lineHeight: 1.6
+            }}
+          >
+            {error}
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<RefreshIcon />}
+            onClick={() => fetchPhotos(1)}
+            sx={{ 
+              mt: 2,
+              px: 3,
+              py: 1
+            }}
+          >
+            重试
+          </Button>
+        </Box>
+      ) : photos.length === 0 ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
+          <Typography variant="body1" color="text.secondary">
+            暂无照片
+          </Typography>
         </Box>
       ) : (
         <>
@@ -157,17 +234,36 @@ export default function GalleryPage() {
                         }}
                       >
                         {/* 图片 */}
-                        <Box
-                          component="img"
-                          src={photo.url}
-                          alt={photo.title}
-                          sx={{
-                            width: '100%',
-                            height: 'auto',
-                            display: 'block',
-                            minHeight: '150px'
-                          }}
-                        />
+                        {imageErrors.has(photo.id) ? (
+                          <Box
+                            sx={{
+                              width: '100%',
+                              minHeight: '200px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              bgcolor: 'grey.100',
+                              color: 'text.secondary'
+                            }}
+                          >
+                            <Typography variant="body2" sx={{ textAlign: 'center', p: 2 }}>
+                              图片加载失败
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Box
+                            component="img"
+                            src={photo.url}
+                            alt={photo.title}
+                            onError={() => handleImageError(photo.id)}
+                            sx={{
+                              width: '100%',
+                              height: 'auto',
+                              display: 'block',
+                              minHeight: '150px'
+                            }}
+                          />
+                        )}
 
                         {/* 悬停信息层 */}
                         <Box
