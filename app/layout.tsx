@@ -21,14 +21,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://your-domain.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://lidashan.com"),
   title: {
     default: "Sam's Blog - 记录生活，分享思考",
     template: "%s | Sam's Blog",
   },
   description: "一个记录生活、分享思考的个人博客，包含文章、时光记录、照片墙和留言板",
-  keywords: ["博客", "个人博客", "技术博客", "生活记录", "Sam's Blog", "技术分享", "生活随笔"],
-  authors: [{ name: "Sam", url: process.env.NEXT_PUBLIC_SITE_URL || "https://your-domain.com" }],
+  keywords: ["李大山", "李大山博客", "个人博客", "技术博客", "生活记录", "Sam's Blog", "技术分享", "生活随笔"],
+  authors: [{ name: "Sam", url: process.env.NEXT_PUBLIC_SITE_URL || "https://lidashan.com" }],
   creator: "Sam",
   publisher: "Sam",
   formatDetection: {
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: "Sam's Blog - 记录生活，分享思考",
     description: "一个记录生活、分享思考的个人博客",
     images: ["/og-image.jpg"],
-    creator: "@your-twitter-handle", // 替换为实际的 Twitter 账号
+    creator: "@your-twitter-handle",
   },
   robots: {
     index: true,
@@ -95,7 +95,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/lxgwwenkai-light/result.css"
+          href="https://npm.elemecdn.com/lxgw-wenkai-screen-webfont/style.css"
         />
       </head>
       <body

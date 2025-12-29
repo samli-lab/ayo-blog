@@ -527,7 +527,15 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   if (!post) {
     return (
-      <Container maxWidth="lg" sx={{ mt: { xs: 10, sm: 12 }, mb: 5, pt: 2 }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          mt: { xs: 10, sm: 12 },
+          mb: 5,
+          pt: 2,
+          fontFamily: '"LXGW WenKai Screen", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif'
+        }}
+      >
         <Box sx={{ textAlign: "center", py: 10 }}>
           <Typography variant="h4" gutterBottom>
             文章未找到
@@ -542,7 +550,15 @@ export default async function BlogDetailPage({ params }: PageProps) {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: { xs: 10, sm: 12 }, mb: 5, pt: 2 }}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: { xs: 10, sm: 12 },
+        mb: 5,
+        pt: 2,
+        fontFamily: '"LXGW WenKai Screen", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif'
+      }}
+    >
       {/* Back Button */}
       <Box sx={{ mb: 3 }}>
         <BackButton />

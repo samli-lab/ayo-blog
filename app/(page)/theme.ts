@@ -16,7 +16,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily:
-      "'LXGW WenKai Light', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+      '"LXGW WenKai Screen", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif',
     fontWeightRegular: 400,
     h1: {
       fontSize: "2.5rem",

@@ -18,6 +18,7 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
   return (
     <Box
       sx={{
+        fontFamily: '"LXGW WenKai Screen", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif',
         "& .prose": {
           color: "text.primary",
           fontSize: "1.1rem",
