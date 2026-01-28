@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import type { Pagination } from './types';
 
 /**
  * 照片接口定义
@@ -11,16 +12,6 @@ export interface Photo {
   sortOrder?: number;
   createdAt?: string;
   updatedAt?: string;
-}
-
-/**
- * 分页信息接口
- */
-export interface Pagination {
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
 }
 
 /**

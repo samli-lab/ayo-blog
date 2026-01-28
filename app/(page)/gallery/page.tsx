@@ -17,7 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { keyframes } from '@emotion/react';
 import { useInView } from 'react-intersection-observer';
-import { getPhotosWithPagination, Photo, Pagination } from '@/lib/api/gallery';
+import { getPhotosWithPagination, type Photo, type Pagination } from '@/lib/api';
 
 // 渐入动画
 const fadeIn = keyframes`

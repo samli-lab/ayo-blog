@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import type { Pagination } from './types';
 
 /**
  * 分类接口
@@ -57,16 +58,6 @@ export function formatPostForDisplay(post: Post): PostDisplay {
     year,
     categoryName: post.category.name,
   };
-}
-
-/**
- * 分页信息接口
- */
-export interface Pagination {
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
 }
 
 /**
