@@ -17,7 +17,7 @@ import { useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import { keyframes } from '@emotion/react';
 import { useInView } from 'react-intersection-observer';
-import { getGalleryPhotos, Photo, Pagination } from '@/lib/api/gallery';
+import { getPhotosWithPagination, Photo, Pagination } from '@/lib/api/gallery';
 
 // 渐入动画
 const fadeIn = keyframes`
@@ -53,25 +53,21 @@ export default function GalleryPage() {
         setError(null);
       }
 
-      const resData = await getGalleryPhotos(page, 12);
+      const resData = await getPhotosWithPagination(page, 12);
 
-      if (resData.code === 200) {
-        if (isLoadMore) {
-          setPhotos(prev => {
-            // 简单的去重逻辑，防止因网络抖动等原因导致数据重复
-            const newPhotos = resData.data.photos.filter(
-              p => !prev.find(existing => existing.id === p.id)
-            );
-            return [...prev, ...newPhotos];
-          });
-        } else {
-          setPhotos(resData.data.photos);
-        }
-        setPagination(resData.data.pagination);
-        setError(null);
+      if (isLoadMore) {
+        setPhotos(prev => {
+          // 简单的去重逻辑，防止因网络抖动等原因导致数据重复
+          const newPhotos = resData.photos.filter(
+            p => !prev.find(existing => existing.id === p.id)
+          );
+          return [...prev, ...newPhotos];
+        });
       } else {
-        throw new Error(resData.message || '获取照片失败');
+        setPhotos(resData.photos);
       }
+      setPagination(resData.pagination);
+      setError(null);
     } catch (error) {
       console.error('Failed to fetch photos:', error);
       const errorMessage = error instanceof Error ? error.message : '加载照片失败，请检查网络连接后重试';

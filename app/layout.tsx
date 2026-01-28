@@ -31,6 +31,17 @@ export const metadata: Metadata = {
   authors: [{ name: "Sam", url: process.env.NEXT_PUBLIC_SITE_URL || "https://lidashan.com" }],
   creator: "Sam",
   publisher: "Sam",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/icon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/icon.png"],
+  },
   formatDetection: {
     email: false,
     address: false,
@@ -93,6 +104,7 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <link rel="icon" href="/icon.png" type="image/png" />
         <link
           rel="stylesheet"
           href="https://npm.elemecdn.com/lxgw-wenkai-screen-webfont/style.css"

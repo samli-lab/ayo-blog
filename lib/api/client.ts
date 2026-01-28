@@ -1,17 +1,29 @@
 import { API_CONFIG } from './config';
 
 /**
+ * API 响应的通用格式
+ */
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
+/**
  * 统一的 API 请求客户端
+ * @param endpoint API 端点
+ * @param options 请求选项
+ * @returns 返回 data 字段的内容
  */
 export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   const { BASE_URL, TIMEOUT } = API_CONFIG;
-  
+
   // 拼接完整的 URL
-  const url = endpoint.startsWith('http') 
-    ? endpoint 
+  const url = endpoint.startsWith('http')
+    ? endpoint
     : `${BASE_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
 
   const defaultOptions: RequestInit = {
@@ -26,7 +38,7 @@ export async function apiClient<T>(
     // 添加超时控制
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
-    
+
     const response = await fetch(url, {
       ...defaultOptions,
       signal: controller.signal,
@@ -53,20 +65,29 @@ export async function apiClient<T>(
       throw new Error(errorMessage);
     }
 
-    return await response.json();
+    // 解析 JSON 响应
+    const result: ApiResponse<T> = await response.json();
+
+    // 检查业务状态码
+    if (result.code !== 200) {
+      throw new Error(result.message || '请求失败');
+    }
+
+    // 返回 data 字段
+    return result.data;
   } catch (error) {
     console.error('API Client Error:', error);
-    
+
     // 处理超时错误
     if (error instanceof Error && error.name === 'AbortError') {
       throw new Error('请求超时，请检查网络连接后重试');
     }
-    
+
     // 处理网络错误
     if (error instanceof TypeError && error.message.includes('fetch')) {
       throw new Error('网络连接失败，请检查网络设置');
     }
-    
+
     throw error;
   }
 }

@@ -1,63 +1,57 @@
 'use client';
 
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-
-// Mock Data
-const posts = [
-  {
-    id: 1,
-    slug: "butterfly-5-5-release-notes",
-    title: "Butterfly 5.5 发行说明",
-    excerpt: "这一次更新，我们重新思考了性能与美学的平衡。不仅优化了延迟加载算法，更在细节上打磨了每一处交互。",
-    date: "09.09",
-    year: "2025",
-    category: "更新日志"
-  },
-  {
-    id: 2,
-    slug: "getting-started-with-hexo-theme-butterfly",
-    title: "与 Butterfly 的初次相遇",
-    excerpt: "从安装到配置，这不仅仅是一份技术指南，更是一场关于如何搭建个人精神家园的探索旅程。",
-    date: "05.28",
-    year: "2025",
-    category: "指南"
-  },
-  {
-    id: 3,
-    slug: "advanced-customization-tutorial",
-    title: "进阶：打造独一无二的博客",
-    excerpt: "深入 CSS 的世界，通过自定义样式和插件，让你的文字在指尖跳舞，展现出最真实的自我。",
-    date: "01.15",
-    year: "2025",
-    category: "教程"
-  },
-  {
-    id: 4,
-    slug: "markdown-syntax-guide",
-    title: "Markdown：文字的律动",
-    excerpt: "掌握简单的语法，让写作回归本质。在这里，我们探讨如何利用 Markdown 构建清晰、有力的表达。",
-    date: "11.20",
-    year: "2024",
-    category: "写作"
-  },
-  {
-    id: 5,
-    slug: "gallery-feature-showcase",
-    title: "光影之美：图库功能详解",
-    excerpt: "照片是时光的切片。学习如何利用全新的瀑布流布局，展示那些让你心动的每一个瞬间。",
-    date: "08.05",
-    year: "2024",
-    category: "摄影"
-  }
-];
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
+import { motion } from 'framer-motion';
+import { getPosts, type PostDisplay } from '@/lib/api';
 
 export default function BlogListPage() {
+  const [posts, setPosts] = useState<PostDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const data = await getPosts();
+        setPosts(data);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '获取文章列表时发生错误');
+        console.error('Error fetching posts:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Container maxWidth="md" sx={{ mt: { xs: 15, md: 22 }, mb: 20 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+          <CircularProgress />
+        </Box>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="md" sx={{ mt: { xs: 15, md: 22 }, mb: 20 }}>
+        <Alert severity="error">{error}</Alert>
+      </Container>
+    );
+  }
   return (
     <Container maxWidth="md" sx={{ mt: { xs: 15, md: 22 }, mb: 20 }}>
       {/* 极简页眉 */}
@@ -199,7 +193,7 @@ export default function BlogListPage() {
                             letterSpacing: '0.1em'
                           }}
                         >
-                          # {post.category}
+                          # {post.categoryName}
                         </Typography>
                       </Box>
                     </Box>
