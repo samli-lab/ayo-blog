@@ -119,7 +119,19 @@ export default function AboutPage() {
           </Typography>
 
           <Typography paragraph sx={{ lineHeight: 2, fontSize: '1.1rem', color: 'text.primary', textAlign: 'justify' }}>
-            这不再是传统的“敲代码”，而更像是一场持续不断的“跨时空对话”。我只负责给出审美倾向和逻辑骨架，而 AI 则负责把这些想法变成真实的、可运行的像素。这个过程虽然没有了指尖敲击键盘的快感，却多了一种像是在指挥乐团的奇妙体验。
+            我只负责给出审美倾向和逻辑骨架，让AI负责把这些想法变成真实的代码，最后就是目前看到的这个样子。
+          </Typography>
+
+          <Typography paragraph sx={{ lineHeight: 2, fontSize: '1.1rem', color: 'text.primary', textAlign: 'justify' }}>
+            从2015年最初用 HTML + PHP 一行行手写代码搭建博客，到后来尝试 WordPress、静态生成器、各种前端框架，再到今天——整个站点完全由 AI 根据我的审美倾向和逻辑结构自动生成，这十年的演变，几乎就是个人技术轨迹与时代工具演进的一个缩影。
+          </Typography>
+
+          <Typography paragraph sx={{ lineHeight: 2, fontSize: '1.1rem', color: 'text.primary', textAlign: 'justify' }}>
+            那时候，每个功能都要自己琢磨：评论系统怎么防垃圾、页面加载如何优化、移动端适配怎么做……而现在，我只需要清晰地描述&ldquo;帮我创建一个博客网站的项目&rdquo;，AI 就能输出结构合理、语义清晰、样式克制的完整实现。
+          </Typography>
+
+          <Typography paragraph sx={{ lineHeight: 2, fontSize: '1.1rem', color: 'text.primary', textAlign: 'justify' }}>
+            当然，这并不意味着我不再需要懂技术。恰恰相反，正因为理解背后的原理，我才能更准确地引导 AI 做出符合预期的结果。只是，重心变了——从&ldquo;如何写代码&rdquo;转向了&ldquo;如何表达意图&rdquo;。
           </Typography>
         </Box>
 
@@ -141,6 +153,26 @@ export default function AboutPage() {
             而是为了在未来的某个时刻，
             <br />
             能与那个曾经热烈生活过的自己，久别重逢。”
+          </Typography>
+          <Typography
+            sx={{
+              mt: 4,
+              color: 'text.secondary',
+              fontSize: '1rem',
+              lineHeight: 1.8,
+              '& a': {
+                color: 'primary.main',
+                textDecoration: 'none',
+                borderBottom: '1px solid transparent',
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  borderBottom: '1px solid',
+                  borderColor: 'primary.main',
+                }
+              }
+            }}
+          >
+            如果你恰巧看到了这里，又想进一步交流，欢迎随时给我发<a href="mailto:samdleeone@gmail.com">邮件</a>。
           </Typography>
           <Typography sx={{ mt: 6, color: 'primary.main', letterSpacing: '0.3rem', fontWeight: 500 }}>
             {new Date().getFullYear()} · 步履不停
